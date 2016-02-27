@@ -1,0 +1,11 @@
+*.o
+*.a
+*.so
+_obj
+_test
+*.exe
+*.test
+*.prof
+.vendor
+generated_version.go
+tweets
