@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"bufio"
+	"bufio"
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
@@ -27,34 +27,45 @@ func main() {
 	access_token := os.Getenv("TWITTER_ACCESS_TOKEN")
 	access_secret := os.Getenv("TWITTER_ACCESS_SECRET")
 
+	var err error
+	var tweet string
+
 	config := oauth1.NewConfig(consumer_key, consumer_secret)
 	token := oauth1.NewToken(access_token, access_secret)
 
 	httpClient := config.Client(oauth1.NoContext, token)
 	client := twitter.NewClient(httpClient)
 
-	PostTweet(client, "testing2")
+	tweet, err = LoadTweet()
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = CheckValid(tweet)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	PostTweet(client, tweet)
 }
 
-/*func parseTweets() []string {
-	tweets := []string{}
+func LoadTweet() (string, error) {
 	f, _ := os.Open(FILENAME)
 	reader := bufio.NewReader(f)
-	for tweet, isPrefix, err := reader.ReadLine(); tweet != nil && err != nil; tweet, isPrefix, err := reader.ReadLine() {
-		if isPrefix {
-			return
-			//not sure
-		}
-		if validTweet(tweet) {
-			append(tweets, tweet)
-		}
+	tweet, isPrefix, err := reader.ReadLine()
+	if isPrefix {
+		fmt.Println("It's a prefex")
+		return "", nil
 	}
-	return tweets
-}*/
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+	return string(tweet), nil
+}
 
-func validTweet(tweet string) bool {
+func CheckValid(tweet string) error {
 	if len(tweet) > 140 {
-		return false
+		return fmt.Errorf("More than 140 chars")
 	}
-	return true
+	return nil
 }
