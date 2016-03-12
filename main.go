@@ -2,14 +2,11 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"os"
-)
-
-const (
-	FILENAME = "tweets"
 )
 
 func PostTweet(client *twitter.Client, tweet string) error {
@@ -26,7 +23,7 @@ func main() {
 	consumer_secret := os.Getenv("TWITTER_CONS_SECRET")
 	access_token := os.Getenv("TWITTER_ACCESS_TOKEN")
 	access_secret := os.Getenv("TWITTER_ACCESS_SECRET")
-
+	FILENAME := flag.String("tweets", "tweets", "Path to tweets")
 	var err error
 	var tweet string
 
@@ -36,7 +33,7 @@ func main() {
 	httpClient := config.Client(oauth1.NoContext, token)
 	client := twitter.NewClient(httpClient)
 
-	tweet, err = LoadTweet()
+	tweet, err = LoadTweet(*FILENAME)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -48,7 +45,7 @@ func main() {
 	PostTweet(client, tweet)
 }
 
-func LoadTweet() (string, error) {
+func LoadTweet(FILENAME string) (string, error) {
 	f, _ := os.Open(FILENAME)
 	reader := bufio.NewReader(f)
 	tweet, isPrefix, err := reader.ReadLine()
