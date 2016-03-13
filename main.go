@@ -36,11 +36,13 @@ func main() {
 	fmt.Println(*FILENAME)
 	tweet, err = LoadTweet(*FILENAME)
 	if err != nil {
+		fmt.Println("Failed to load tweet")
 		fmt.Println(err)
 	}
 	fmt.Println(tweet)
 	err = CheckValid(tweet)
 	if err != nil {
+		fmt.Println("Failed to validate tweet")
 		fmt.Println(err)
 		return
 	}
@@ -48,7 +50,10 @@ func main() {
 }
 
 func LoadTweet(FILENAME string) (string, error) {
-	f, _ := os.Open(FILENAME)
+	f, err := os.Open(FILENAME)
+	if err != nil {
+		fmt.Printf("Couldn't open file: %s\n", FILENAME)
+	}
 	reader := bufio.NewReader(f)
 	tweet, isPrefix, err := reader.ReadLine()
 	if isPrefix {
@@ -56,6 +61,7 @@ func LoadTweet(FILENAME string) (string, error) {
 		return "", nil
 	}
 	if err != nil {
+		fmt.Println("Failed to read line")
 		fmt.Println(err)
 		return "", err
 	}
