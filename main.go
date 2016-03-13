@@ -24,6 +24,7 @@ func main() {
 	access_token := os.Getenv("TWITTER_ACCESS_TOKEN")
 	access_secret := os.Getenv("TWITTER_ACCESS_SECRET")
 	FILENAME := flag.String("tweets", "tweets", "Path to tweets")
+	flag.Parse()
 	var err error
 	var tweet string
 
@@ -32,11 +33,12 @@ func main() {
 
 	httpClient := config.Client(oauth1.NoContext, token)
 	client := twitter.NewClient(httpClient)
-
+	fmt.Println(*FILENAME)
 	tweet, err = LoadTweet(*FILENAME)
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println(tweet)
 	err = CheckValid(tweet)
 	if err != nil {
 		fmt.Println(err)
