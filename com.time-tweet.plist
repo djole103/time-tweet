@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.time-tweet.app</string>
+    <key>EnvironmentVariables</key>
+      <dict>
+        <key>TWITTER_CONS_KEY</key>
+          <string>xxx</string>
+        <key>TWITTER_CONS_SECRET</key>
+          <string>xxx</string>
+        <key>TWITTER_ACCESS_TOKEN</key>
+          <string>xxx</string>
+        <key>TWITTER_ACCESS_SECRET</key>
+          <string>xxx</string>
+      </dict>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/path/to/time-tweet</string>
+      <string>-tweets</string>
+      <string>/path/to/tweets</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>22</integer>
+        <key>Minute</key>
+        <integer>01</integer>
+    </dict>
+  </dict>
+</plist>
+
